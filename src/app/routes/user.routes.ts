@@ -1,7 +1,6 @@
-import { me, deleteMe, updateMe } from '@/controllers/user';
+import { me, deleteMe, updateMe, listFriends } from '@/controllers/user';
 import { authMiddleware } from '../middleware';
 import { Router } from 'express';
-import { listFriends } from '@/controllers/user/list-friends';
 
 const userRoute = Router();
 
