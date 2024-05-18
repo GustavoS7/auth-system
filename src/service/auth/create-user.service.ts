@@ -1,4 +1,5 @@
-import { UserModel } from '@/models/user-model';
+import { AppError } from '@/errors/app-error';
+import { UserModel } from '@/models';
 
 interface IcreateUserData {
   name: string;
@@ -17,7 +18,15 @@ export const createUser = async ({
 }: IcreateUserData) => {
   const user = await UserModel.findOne({ email });
 
-  if (user) throw new Error();
+  if (user) throw new AppError('User already exists');
 
-  return user;
+  const newUser = await new UserModel({
+    name,
+    email,
+    password,
+    description,
+    photo,
+  }).save();
+
+  return newUser;
 };

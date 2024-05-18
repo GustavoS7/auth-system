@@ -1,5 +1,7 @@
+import { generateToken } from '@/service/tokens/generate-token.service';
 import { NextFunction, Request, Response } from 'express';
 import { createUser } from '@/service/auth';
+import { env } from '@/app/env';
 import { z } from 'zod';
 
 const registerDataInput = z.object({
@@ -27,9 +29,15 @@ export const register = async (
       photo,
     });
 
-    const [accessToken, refreshToken] = await Promise.all([]);
+    const [accessToken, refreshToken] = await Promise.all([
+      generateToken({ userId: newUser.id }, '1d', env.TOKEN_SECRET),
+      generateToken({ userId: newUser.id }, '30d', env.REFRESH_TOKEN_SECRET),
+    ]);
 
-    return res.status(201).json({});
+    return res.status(201).json({
+      refreshToken,
+      accessToken,
+    });
   } catch (error) {
     return next(error);
   }
