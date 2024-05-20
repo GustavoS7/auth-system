@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { listUsers } from '@/service/user';
+import { fetchUsers } from '@/service/user';
 
-export const listFriends = async (
+export const listUsers = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const users = await listUsers();
+    const users = await fetchUsers();
 
     return res.status(200).send(users);
   } catch (error) {
